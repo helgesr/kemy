@@ -12,9 +12,9 @@ interface PdfReportProps {
 }
 
 const recStyles: Record<string, { bg: string; border: string; text: string; label: string }> = {
-  low: { bg: '#34C75910', border: '#34C759', text: '#1B7D32', label: 'LAV RISIKO' },
-  medium: { bg: '#FF950010', border: '#FF9500', text: '#C46700', label: 'MODERAT RISIKO' },
-  high: { bg: '#FF3B3010', border: '#FF3B30', text: '#D32F2F', label: 'HØY RISIKO' },
+  low: { bg: '#30D15810', border: '#30D158', text: '#1B7D32', label: 'LAV RISIKO' },
+  medium: { bg: '#FF9F0A10', border: '#FF9F0A', text: '#C46700', label: 'MODERAT RISIKO' },
+  high: { bg: '#FF453A10', border: '#FF453A', text: '#D32F2F', label: 'HØY RISIKO' },
 };
 
 function Dot({ active, color }: { active: boolean; color: string }) {
@@ -54,7 +54,7 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
           width: '794px',
           height: '1123px',
           background: '#FFFFFF',
-          fontFamily: "'DM Sans', 'Helvetica Neue', system-ui, sans-serif",
+          fontFamily: "'Instrument Sans', 'Helvetica Neue', system-ui, sans-serif",
           color: '#1A1A1E',
           position: 'fixed',
           left: '-9999px',
@@ -77,10 +77,11 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px' }}>
             <span
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: "'Instrument Sans', system-ui, sans-serif",
                 fontSize: '22px',
-                letterSpacing: '0.2em',
-                color: '#1A1A1E',
+                fontWeight: 700,
+                letterSpacing: '-0.01em',
+                color: '#111111',
               }}
             >
               KEMY
@@ -101,9 +102,9 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '20px' }}>
             <h1
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: "'Instrument Sans', system-ui, sans-serif",
                 fontSize: '20px',
-                fontWeight: 400,
+                fontWeight: 700,
                 margin: 0,
                 color: '#1A1A1E',
               }}
@@ -148,9 +149,9 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
               <div style={{ textAlign: 'center', paddingLeft: '20px' }}>
                 <div
                   style={{
-                    fontFamily: "'DM Serif Display', Georgia, serif",
+                    fontFamily: "'Instrument Sans', system-ui, sans-serif",
                     fontSize: '40px',
-                    fontWeight: 400,
+                    fontWeight: 700,
                     lineHeight: 1,
                     color: rec.text,
                   }}
@@ -165,7 +166,7 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
               {categories.map((cat) => {
                 const s = categoryScores[cat.id] ?? 0;
                 const pct = (s / 8) * 100;
-                const c = s <= 2 ? '#34C759' : s <= 5 ? '#FF9500' : '#FF3B30';
+                const c = s <= 2 ? '#30D158' : s <= 5 ? '#FF9F0A' : '#FF453A';
                 return (
                   <div key={cat.id} style={{ flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '3px' }}>
@@ -204,7 +205,7 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
 
             {categories.map((cat, ci) => {
               const cs = categoryScores[cat.id] ?? 0;
-              const sc = cs <= 2 ? '#34C759' : cs <= 5 ? '#FF9500' : '#FF3B30';
+              const sc = cs <= 2 ? '#30D158' : cs <= 5 ? '#FF9F0A' : '#FF453A';
               return (
                 <div key={cat.id}>
                   <div
@@ -235,9 +236,9 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
                         }}
                       >
                         <span style={{ fontSize: '11px', color: '#1A1A1E' }}>{f.name}</span>
-                        <span style={{ display: 'flex', justifyContent: 'center' }}><Dot active={v === 0} color="#34C759" /></span>
-                        <span style={{ display: 'flex', justifyContent: 'center' }}><Dot active={v === 1} color="#FF9500" /></span>
-                        <span style={{ display: 'flex', justifyContent: 'center' }}><Dot active={v === 2} color="#FF3B30" /></span>
+                        <span style={{ display: 'flex', justifyContent: 'center' }}><Dot active={v === 0} color="#30D158" /></span>
+                        <span style={{ display: 'flex', justifyContent: 'center' }}><Dot active={v === 1} color="#FF9F0A" /></span>
+                        <span style={{ display: 'flex', justifyContent: 'center' }}><Dot active={v === 2} color="#FF453A" /></span>
                       </div>
                     );
                   })}
@@ -250,15 +251,15 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
           {/* ── LEGEND ── */}
           <div style={{ marginTop: '14px', display: 'flex', gap: '20px', fontSize: '9px', color: '#AEAEB2' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34C759', display: 'inline-block' }} />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#30D158', display: 'inline-block' }} />
               0–8: Behold fisk
             </span>
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#FF9500', display: 'inline-block' }} />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#FF9F0A', display: 'inline-block' }} />
               9–16: Vurder toppslakt
             </span>
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#FF3B30', display: 'inline-block' }} />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#FF453A', display: 'inline-block' }} />
               17–24: Gjennomfør toppslakt
             </span>
           </div>

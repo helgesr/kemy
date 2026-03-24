@@ -7,117 +7,103 @@ interface GaugeChartProps {
 }
 
 export default function GaugeChart({ score, maxScore = 24 }: GaugeChartProps) {
-  const cx = 100;
-  const cy = 100;
-  const r = 80;
-  const strokeWidth = 12;
-  const needleLen = r - strokeWidth - 2;
+  const cx = 120;
+  const cy = 110;
+  const r = 90;
+  const stroke = 14;
 
-  // Animated score counter
-  const [displayScore, setDisplayScore] = useState(0);
-  const motionScore = useMotionValue(0);
-  const springScore = useSpring(motionScore, { stiffness: 60, damping: 20 });
+  // Animated score
+  const [display, setDisplay] = useState(0);
+  const mv = useMotionValue(0);
+  const spring = useSpring(mv, { stiffness: 50, damping: 18 });
 
+  useEffect(() => { mv.set(score); }, [score, mv]);
   useEffect(() => {
-    motionScore.set(score);
-  }, [score, motionScore]);
+    const unsub = spring.on('change', (v) => setDisplay(Math.round(v)));
+    return unsub;
+  }, [spring]);
 
-  useEffect(() => {
-    const unsubscribe = springScore.on('change', (v) => {
-      setDisplayScore(Math.round(v));
-    });
-    return unsubscribe;
-  }, [springScore]);
-
-  // Animated needle angle (radians)
+  // Arc math
   const ratio = Math.min(score / maxScore, 1);
-  const targetAngleRad = Math.PI + ratio * Math.PI; // π (left) → 2π (right)
+  const startAngle = 150;   // 7 o'clock
+  const sweep = 240;        // 240° arc (from 7 o'clock to 5 o'clock)
+  const endAngle = startAngle + sweep;
 
-  const motionAngle = useMotionValue(Math.PI);
-  const springAngle = useSpring(motionAngle, { stiffness: 50, damping: 14 });
-  const [needleEnd, setNeedleEnd] = useState({ x: cx - needleLen, y: cy });
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const px = (a: number) => cx + r * Math.cos(toRad(a));
+  const py = (a: number) => cy + r * Math.sin(toRad(a));
 
-  useEffect(() => {
-    motionAngle.set(targetAngleRad);
-  }, [targetAngleRad, motionAngle]);
-
-  useEffect(() => {
-    const unsubscribe = springAngle.on('change', (angle) => {
-      setNeedleEnd({
-        x: cx + needleLen * Math.cos(angle),
-        y: cy + needleLen * Math.sin(angle),
-      });
-    });
-    return unsubscribe;
-  }, [springAngle, cx, cy, needleLen]);
-
-  // SVG arc path
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
-  const describeArc = (startDeg: number, endDeg: number): string => {
-    const x1 = cx + r * Math.cos(toRad(startDeg));
-    const y1 = cy + r * Math.sin(toRad(startDeg));
-    const x2 = cx + r * Math.cos(toRad(endDeg));
-    const y2 = cy + r * Math.sin(toRad(endDeg));
-    const largeArc = endDeg - startDeg > 180 ? 1 : 0;
-    return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+  const arc = (from: number, to: number) => {
+    const large = to - from > 180 ? 1 : 0;
+    return `M ${px(from)} ${py(from)} A ${r} ${r} 0 ${large} 1 ${px(to)} ${py(to)}`;
   };
 
-  const arcPath = describeArc(180, 360);
+  const bgPath = arc(startAngle, endAngle);
+  const fillAngle = startAngle + ratio * sweep;
+  const fillPath = ratio > 0.01 ? arc(startAngle, fillAngle) : '';
+
+  // Color based on score
+  const color = score <= 8 ? '#30D158' : score <= 16 ? '#FF9F0A' : '#FF453A';
+  const label = score <= 8 ? 'Lav' : score <= 16 ? 'Moderat' : 'Høy';
 
   return (
     <div className="flex flex-col items-center">
-      <svg viewBox="0 0 200 120" className="w-full max-w-[260px]">
-        <defs>
-          <linearGradient id="gaugeGradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#34C759" />
-            <stop offset="50%" stopColor="#FF9500" />
-            <stop offset="100%" stopColor="#FF3B30" />
-          </linearGradient>
-        </defs>
-
+      <svg viewBox="0 0 240 160" className="w-full max-w-[280px]">
         {/* Background arc */}
         <path
-          d={arcPath}
+          d={bgPath}
           fill="none"
-          stroke="#E5E5EA"
-          strokeWidth={strokeWidth}
+          stroke="#E8E8ED"
+          strokeWidth={stroke}
           strokeLinecap="round"
-          className="dark:stroke-[#2E303A]"
+          className="dark:stroke-[#2C2C2E]"
         />
 
-        {/* Colored arc */}
-        <path
-          d={arcPath}
-          fill="none"
-          stroke="url(#gaugeGradient)"
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-        />
+        {/* Filled arc */}
+        {fillPath && (
+          <path
+            d={fillPath}
+            fill="none"
+            stroke={color}
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            style={{
+              filter: `drop-shadow(0 0 6px ${color}40)`,
+              transition: 'stroke 0.4s, filter 0.4s',
+            }}
+          />
+        )}
 
-        {/* Needle - calculated position, no CSS transforms */}
-        <line
-          x1={cx}
-          y1={cy}
-          x2={needleEnd.x}
-          y2={needleEnd.y}
-          stroke="currentColor"
-          strokeWidth={2.5}
-          strokeLinecap="round"
-          className="text-kemy-dark dark:text-kemy-light"
-        />
-
-        {/* Pivot dot */}
-        <circle cx={cx} cy={cy} r={5} className="fill-kemy-dark dark:fill-kemy-light" />
+        {/* Score text in center */}
+        <text
+          x={cx}
+          y={cy - 6}
+          textAnchor="middle"
+          className="fill-kemy-dark dark:fill-kemy-dark-text"
+          style={{ fontSize: '44px', fontWeight: 700, fontFamily: 'Instrument Sans, system-ui' }}
+        >
+          {display}
+        </text>
+        <text
+          x={cx}
+          y={cy + 16}
+          textAnchor="middle"
+          className="fill-kemy-gray dark:fill-kemy-light"
+          style={{ fontSize: '13px', fontWeight: 500 }}
+        >
+          av {maxScore}
+        </text>
       </svg>
 
-      {/* Score readout */}
-      <div className="-mt-4 flex items-baseline gap-0.5 select-none">
-        <span className="font-heading text-4xl font-bold tabular-nums text-kemy-dark dark:text-kemy-white">
-          {displayScore}
-        </span>
-        <span className="text-lg text-kemy-gray dark:text-kemy-dark-text">
-          / {maxScore}
-        </span>
+      {/* Risk label pill */}
+      <div
+        className="mt-1 px-3 py-1 rounded-full text-[12px] font-semibold text-white"
+        style={{
+          background: color,
+          transition: 'background 0.4s',
+        }}
+      >
+        {label} risiko
       </div>
     </div>
   );
