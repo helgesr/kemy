@@ -27,15 +27,10 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40" />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-40 w-full">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} className="max-w-2xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight">
-              Designed for
-              <br />
-              the fish.
-            </h1>
-            <p className="mt-5 text-lg text-white/60 max-w-md">
+            <p className="text-lg text-white/70 max-w-md">
               Fish handling equipment engineered for welfare, efficiency and durability. Proven across Norwegian aquaculture.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 to="/products"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white text-kemy-dark font-semibold text-sm rounded-xl hover:bg-white/90 transition-colors"
