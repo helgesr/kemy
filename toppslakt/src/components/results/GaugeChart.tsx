@@ -48,7 +48,7 @@ export default function GaugeChart({ score, maxScore = 24 }: GaugeChartProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <svg viewBox="0 0 240 160" className="w-full max-w-[280px]">
+      <svg viewBox="0 0 240 170" className="w-full max-w-[280px]">
         {/* Background arc */}
         <path
           d={bgPath}
