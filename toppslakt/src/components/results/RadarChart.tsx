@@ -25,12 +25,16 @@ export default function RadarChart({ categoryScores, maxCategoryScore = 8 }: Rad
     fullMark: 100,
   }));
 
+  const isDark = document.documentElement.classList.contains('dark');
+  const gridColor = isDark ? '#3A3A3C' : '#E8E8ED';
+  const labelColor = isDark ? '#AEAEB2' : '#86868B';
+
   return (
     <ResponsiveContainer width="100%" height={200}>
       <ReRadarChart data={data} cx="50%" cy="50%" outerRadius="65%">
-        <PolarGrid stroke="#E8E8ED" />
-        <PolarAngleAxis dataKey="category" tick={{ fontSize: 12, fill: '#86868B', fontFamily: 'Instrument Sans' }} />
-        <Radar name="Score" dataKey="value" stroke="#555566" fill="#555566" fillOpacity={0.15} />
+        <PolarGrid stroke={gridColor} />
+        <PolarAngleAxis dataKey="category" tick={{ fontSize: 12, fill: labelColor, fontFamily: 'Instrument Sans' }} />
+        <Radar name="Score" dataKey="value" stroke="#0A84FF" fill="#0A84FF" fillOpacity={0.25} strokeWidth={2} />
       </ReRadarChart>
     </ResponsiveContainer>
   );
