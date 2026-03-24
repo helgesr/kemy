@@ -11,13 +11,27 @@ interface PdfReportProps {
   categoryScores: Record<string, number>;
 }
 
-const scoreLabels = ['Lav', 'Moderat', 'Høy'] as const;
-
 const recStyles: Record<string, { bg: string; border: string; text: string; label: string }> = {
   low: { bg: '#E8F5EC', border: '#2D8B4E', text: '#1A5C30', label: 'LAV RISIKO' },
   medium: { bg: '#FFF3E0', border: '#D4890A', text: '#8B5A00', label: 'MODERAT RISIKO' },
   high: { bg: '#FDEAEA', border: '#C03030', text: '#8B1A1A', label: 'HØY RISIKO' },
 };
+
+function ScoreDot({ value, target, color }: { value: number; target: number; color: string }) {
+  const active = value === target;
+  return (
+    <div
+      style={{
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        border: active ? 'none' : '1.5px solid #D1D1D6',
+        background: active ? color : 'transparent',
+        display: 'inline-block',
+      }}
+    />
+  );
+}
 
 const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
   ({ locationName, date, scores, totalScore, recommendation, categoryScores }, ref) => {
@@ -30,113 +44,118 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
       minute: '2-digit',
     });
 
+    const formattedDate = new Date(date).toLocaleDateString('nb-NO', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+
     return (
       <div
         ref={ref}
         style={{
-          width: '794px',    /* A4 width at 96dpi */
-          minHeight: '1123px',
+          width: '794px',
+          height: '1123px',
           background: '#FFFFFF',
           fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
           color: '#1E2025',
-          padding: '0',
           position: 'fixed',
           left: '-9999px',
           top: '0',
           zIndex: -1,
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {/* === HEADER BAR === */}
+        {/* ── HEADER ── */}
         <div
           style={{
             background: '#1E2025',
-            padding: '28px 48px',
+            padding: '20px 44px',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-end',
+            alignItems: 'center',
+            flexShrink: 0,
           }}
         >
-          <div>
-            <div
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
+            <span
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: '28px',
+                fontSize: '24px',
                 fontWeight: 800,
                 letterSpacing: '0.25em',
                 color: '#FFFFFF',
               }}
             >
               KEMY
-            </div>
-            <div style={{ fontSize: '11px', color: '#C7C7C9', letterSpacing: '0.05em', marginTop: '2px' }}>
+            </span>
+            <span style={{ fontSize: '10px', color: '#8E8E93', letterSpacing: '0.04em' }}>
               Beslutningsstøtte for toppslakt
-            </div>
+            </span>
           </div>
-          <div style={{ fontSize: '11px', color: '#C7C7C9', textAlign: 'right' }}>
-            Rapport generert {generatedAt}
-          </div>
+          <span style={{ fontSize: '10px', color: '#8E8E93' }}>
+            {generatedAt}
+          </span>
         </div>
 
-        {/* === CONTENT === */}
-        <div style={{ padding: '36px 48px 32px' }}>
+        {/* ── BODY ── */}
+        <div style={{ flex: 1, padding: '28px 44px 20px', display: 'flex', flexDirection: 'column' }}>
 
-          {/* Title + meta */}
-          <div style={{ marginBottom: '28px' }}>
+          {/* Title row */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '20px' }}>
             <h1
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: '24px',
+                fontSize: '22px',
                 fontWeight: 700,
-                margin: '0 0 4px',
+                margin: 0,
                 color: '#1E2025',
               }}
             >
               Vurdering av toppslakt
             </h1>
-            <div style={{ display: 'flex', gap: '32px', fontSize: '13px', color: '#56585C', marginTop: '8px' }}>
+            <div style={{ fontSize: '12px', color: '#56585C', display: 'flex', gap: '24px' }}>
               <span><strong style={{ color: '#1E2025' }}>Lokalitet:</strong> {locationName || '–'}</span>
-              <span>
-                <strong style={{ color: '#1E2025' }}>Dato:</strong>{' '}
-                {new Date(date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </span>
+              <span><strong style={{ color: '#1E2025' }}>Dato:</strong> {formattedDate}</span>
             </div>
           </div>
 
-          {/* === SCORE OVERVIEW CARD === */}
+          {/* ── RECOMMENDATION CARD ── */}
           <div
             style={{
               border: `2px solid ${rec.border}`,
-              borderRadius: '12px',
+              borderRadius: '10px',
               overflow: 'hidden',
-              marginBottom: '32px',
+              marginBottom: '24px',
+              flexShrink: 0,
             }}
           >
-            {/* Top banner */}
             <div
               style={{
                 background: rec.bg,
-                padding: '20px 28px',
+                padding: '14px 24px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
             >
               <div>
-                <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', color: rec.text, marginBottom: '4px' }}>
+                <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', color: rec.text, marginBottom: '2px' }}>
                   {rec.label}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: 600, color: rec.text }}>
+                <div style={{ fontSize: '16px', fontWeight: 600, color: rec.text }}>
                   {recommendation.text}
                 </div>
-                <div style={{ fontSize: '12px', color: '#56585C', marginTop: '4px', maxWidth: '400px' }}>
+                <div style={{ fontSize: '11px', color: '#56585C', marginTop: '2px', maxWidth: '380px', lineHeight: 1.4 }}>
                   {recommendation.description}
                 </div>
               </div>
-              <div style={{ textAlign: 'center', minWidth: '90px' }}>
+              <div style={{ textAlign: 'center', paddingLeft: '20px' }}>
                 <div
                   style={{
                     fontFamily: "'Playfair Display', Georgia, serif",
-                    fontSize: '48px',
+                    fontSize: '42px',
                     fontWeight: 700,
                     lineHeight: 1,
                     color: rec.text,
@@ -144,32 +163,24 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
                 >
                   {totalScore}
                 </div>
-                <div style={{ fontSize: '13px', color: '#56585C', marginTop: '2px' }}>av 24 poeng</div>
+                <div style={{ fontSize: '11px', color: '#56585C' }}>av 24</div>
               </div>
             </div>
 
-            {/* Category bars */}
-            <div style={{ padding: '16px 28px', display: 'flex', gap: '16px' }}>
+            {/* Category mini-bars */}
+            <div style={{ padding: '10px 24px', display: 'flex', gap: '14px', background: '#FFFFFF' }}>
               {categories.map((cat) => {
                 const catScore = categoryScores[cat.id] ?? 0;
                 const pct = (catScore / 8) * 100;
                 const barColor = catScore <= 2 ? '#2D8B4E' : catScore <= 5 ? '#D4890A' : '#C03030';
                 return (
                   <div key={cat.id} style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '3px' }}>
                       <span style={{ fontWeight: 600, color: '#1E2025' }}>{cat.name}</span>
                       <span style={{ fontWeight: 700, color: barColor }}>{catScore}/8</span>
                     </div>
-                    <div style={{ height: '6px', borderRadius: '3px', background: '#E5E5EA' }}>
-                      <div
-                        style={{
-                          height: '100%',
-                          borderRadius: '3px',
-                          width: `${pct}%`,
-                          background: barColor,
-                          minWidth: catScore > 0 ? '4px' : '0',
-                        }}
-                      />
+                    <div style={{ height: '4px', borderRadius: '2px', background: '#E5E5EA' }}>
+                      <div style={{ height: '100%', borderRadius: '2px', width: `${pct}%`, background: barColor, minWidth: catScore > 0 ? '3px' : '0' }} />
                     </div>
                   </div>
                 );
@@ -177,146 +188,138 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
             </div>
           </div>
 
-          {/* === DETAILED SCORES === */}
-          <h2
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '18px',
-              fontWeight: 700,
-              margin: '0 0 16px',
-              color: '#1E2025',
-            }}
-          >
-            Detaljert vurdering
-          </h2>
+          {/* ── DETAILED TABLE ── */}
+          <div style={{ flex: 1 }}>
+            {/* Table header */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 60px 60px 60px',
+                gap: '0',
+                padding: '8px 16px',
+                background: '#1E2025',
+                borderRadius: '8px 8px 0 0',
+                color: '#FFFFFF',
+                fontSize: '10px',
+                fontWeight: 600,
+                letterSpacing: '0.05em',
+              }}
+            >
+              <span>FAKTOR</span>
+              <span style={{ textAlign: 'center' }}>LAV</span>
+              <span style={{ textAlign: 'center' }}>MOD.</span>
+              <span style={{ textAlign: 'center' }}>HØY</span>
+            </div>
 
-          {categories.map((cat) => {
-            const catScore = categoryScores[cat.id] ?? 0;
-            return (
-              <div key={cat.id} style={{ marginBottom: '20px' }}>
-                {/* Category header */}
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '10px 16px',
-                    background: '#F5F5F7',
-                    borderRadius: '8px 8px 0 0',
-                    borderBottom: '2px solid #E5E5EA',
-                  }}
-                >
-                  <span style={{ fontSize: '14px', fontWeight: 700, color: '#1E2025' }}>
-                    {cat.name}
-                  </span>
-                  <span
+            {/* Category blocks */}
+            {categories.map((cat, catIdx) => {
+              const catScore = categoryScores[cat.id] ?? 0;
+              const scoreColor = catScore <= 2 ? '#2D8B4E' : catScore <= 5 ? '#D4890A' : '#C03030';
+              return (
+                <div key={cat.id}>
+                  {/* Category label row */}
+                  <div
                     style={{
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      color: catScore <= 2 ? '#2D8B4E' : catScore <= 5 ? '#D4890A' : '#C03030',
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 60px 60px 60px',
+                      padding: '7px 16px',
+                      background: '#F5F5F7',
+                      borderTop: catIdx > 0 ? '1px solid #E5E5EA' : 'none',
                     }}
                   >
-                    {catScore} / 8
-                  </span>
-                </div>
-
-                {/* Factor rows */}
-                {cat.factors.map((factor, i) => {
-                  const val = scores[factor.id] ?? 0;
-                  return (
-                    <div
-                      key={factor.id}
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#1E2025' }}>
+                      {cat.name}
+                    </span>
+                    <span
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '10px 16px',
-                        borderBottom: i < cat.factors.length - 1 ? '1px solid #E5E5EA' : 'none',
-                        background: '#FFFFFF',
+                        gridColumn: '2 / 5',
+                        textAlign: 'right',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        color: scoreColor,
                       }}
                     >
-                      {/* Factor name */}
-                      <span style={{ flex: 1, fontSize: '13px', color: '#1E2025' }}>
-                        {factor.name}
-                      </span>
+                      {catScore} / 8
+                    </span>
+                  </div>
 
-                      {/* Score pills */}
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        {[0, 1, 2].map((s) => {
-                          const isActive = val === s;
-                          const colors = [
-                            { bg: '#2D8B4E', activeBg: '#2D8B4E' },
-                            { bg: '#D4890A', activeBg: '#D4890A' },
-                            { bg: '#C03030', activeBg: '#C03030' },
-                          ];
-                          return (
-                            <div
-                              key={s}
-                              style={{
-                                width: '64px',
-                                height: '26px',
-                                borderRadius: '13px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '11px',
-                                fontWeight: isActive ? 700 : 500,
-                                background: isActive ? colors[s].activeBg : '#F5F5F7',
-                                color: isActive ? '#FFFFFF' : '#8E8E93',
-                                border: isActive ? 'none' : '1px solid #E5E5EA',
-                              }}
-                            >
-                              {scoreLabels[s]}
-                            </div>
-                          );
-                        })}
+                  {/* Factor rows */}
+                  {cat.factors.map((factor, i) => {
+                    const val = scores[factor.id] ?? 0;
+                    return (
+                      <div
+                        key={factor.id}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 60px 60px 60px',
+                          alignItems: 'center',
+                          padding: '6px 16px',
+                          borderBottom:
+                            i < cat.factors.length - 1
+                              ? '1px solid #F0F0F2'
+                              : 'none',
+                          background: '#FFFFFF',
+                        }}
+                      >
+                        <span style={{ fontSize: '12px', color: '#1E2025' }}>
+                          {factor.name}
+                        </span>
+                        <span style={{ display: 'flex', justifyContent: 'center' }}>
+                          <ScoreDot value={val} target={0} color="#2D8B4E" />
+                        </span>
+                        <span style={{ display: 'flex', justifyContent: 'center' }}>
+                          <ScoreDot value={val} target={1} color="#D4890A" />
+                        </span>
+                        <span style={{ display: 'flex', justifyContent: 'center' }}>
+                          <ScoreDot value={val} target={2} color="#C03030" />
+                        </span>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
+                    );
+                  })}
+                </div>
+              );
+            })}
 
-          {/* === SCORE SCALE LEGEND === */}
+            {/* Table bottom border */}
+            <div style={{ height: '2px', background: '#1E2025', borderRadius: '0 0 8px 8px' }} />
+          </div>
+
+          {/* ── LEGEND ── */}
           <div
             style={{
-              marginTop: '24px',
-              padding: '16px 20px',
-              background: '#F5F5F7',
-              borderRadius: '8px',
-              fontSize: '11px',
-              color: '#56585C',
-              lineHeight: 1.6,
+              marginTop: '16px',
+              display: 'flex',
+              gap: '24px',
+              fontSize: '10px',
+              color: '#8E8E93',
+              flexShrink: 0,
             }}
           >
-            <strong style={{ color: '#1E2025' }}>Tolkningsnøkkel:</strong>
-            <div style={{ display: 'flex', gap: '24px', marginTop: '6px' }}>
-              <span>
-                <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#2D8B4E', marginRight: '6px', verticalAlign: 'middle' }} />
-                0–8 poeng: Behold fisk – lav risiko
-              </span>
-              <span>
-                <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#D4890A', marginRight: '6px', verticalAlign: 'middle' }} />
-                9–16 poeng: Vurder selektiv toppslakt
-              </span>
-              <span>
-                <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#C03030', marginRight: '6px', verticalAlign: 'middle' }} />
-                17–24 poeng: Gjennomfør toppslakt
-              </span>
-            </div>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2D8B4E', display: 'inline-block' }} />
+              0–8 p: Behold fisk
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#D4890A', display: 'inline-block' }} />
+              9–16 p: Vurder toppslakt
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#C03030', display: 'inline-block' }} />
+              17–24 p: Gjennomfør toppslakt
+            </span>
           </div>
         </div>
 
-        {/* === FOOTER === */}
+        {/* ── FOOTER ── */}
         <div
           style={{
-            padding: '16px 48px',
+            padding: '12px 44px',
             borderTop: '1px solid #E5E5EA',
             display: 'flex',
             justifyContent: 'space-between',
-            fontSize: '10px',
+            fontSize: '9px',
             color: '#8E8E93',
-            marginTop: 'auto',
+            flexShrink: 0,
           }}
         >
           <span>Powered by Saxe.Tech AS © 2026</span>
