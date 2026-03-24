@@ -21,21 +21,15 @@ const products: Product[] = [
   },
   {
     name: 'KemyLice',
-    image: '/images/kemylice.avif',
+    image: '/images/delicing-unit.avif',
     description: 'Cleans fish and return water from salmon lice and larvae. Also available for removal of cleaner fish and weak swimmers.',
     features: ['Effective lice flushing', 'Return water purification', 'Removal of weak swimmers', 'Low-impact operation'],
   },
   {
     name: 'KemyPump',
-    image: '/images/kemypump.avif',
+    image: '/images/kemylice.avif',
     description: 'Efficient pumping of both fish and water using the mammut principle.',
     features: ['Gentle fish transport', 'Air-driven suction principle', 'Minimal mechanical contact', 'Stainless steel (AISI304)'],
-  },
-  {
-    name: 'Delicing Units',
-    image: '/images/delicing-unit.avif',
-    description: 'Complete containerized delousing systems for vessel-based operations.',
-    features: ['Turnkey solutions', 'Vessel-compatible', 'Integrated KemySplit sorting', 'High throughput capacity'],
   },
 ];
 
