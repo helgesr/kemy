@@ -23,8 +23,8 @@ export default function HomePage() {
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Heavy gradient overlay: hides embedded image text, darkens bottom for our text */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40" />
+        {/* Gradient overlay: strong at bottom for text readability, light at top to let image show */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-40 w-full">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} className="max-w-2xl">
             <p className="text-lg text-white/70 max-w-md">
