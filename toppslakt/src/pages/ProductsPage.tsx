@@ -15,7 +15,7 @@ interface Product {
 const products: Product[] = [
   {
     name: 'KemySplit',
-    image: '/images/kemysplit-render.avif',
+    image: '/images/kemysplit.avif',
     description: 'Fish-friendly splitting of fish groups based on weight.',
     features: ['Gentle weight-based sorting', 'Minimal stress on fish', 'Robust stainless steel construction (AISI304)', 'Customizable size thresholds'],
   },
