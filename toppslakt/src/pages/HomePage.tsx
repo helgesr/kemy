@@ -16,11 +16,16 @@ const products = [
 export default function HomePage() {
   return (
     <div>
-      {/* Hero – solid dark with accent, no confusing background image */}
-      <section className="relative bg-kemy-dark dark:bg-kemy-dark-bg overflow-hidden">
-        {/* Subtle gradient orb */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#0A84FF]/8 blur-[120px]" />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-24 sm:py-32 lg:py-40">
+      {/* Hero with background image and strong overlay */}
+      <section className="relative min-h-[70vh] flex items-end overflow-hidden">
+        <img
+          src="/images/hero-waves.avif"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Heavy gradient overlay: hides embedded image text, darkens bottom for our text */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40" />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-40 w-full">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} className="max-w-2xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight">
               Designed for
