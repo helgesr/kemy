@@ -29,7 +29,7 @@ export default function CategorySection({ category, scores, onScoreChange }: Cat
   const badgeClasses = getScoreBadgeClasses(categoryScore, maxScore);
 
   return (
-    <section className="bg-kemy-white dark:bg-kemy-dark-surface rounded-xl shadow-sm border border-kemy-border dark:border-kemy-dark-border">
+    <section className="bg-kemy-white dark:bg-kemy-dark-surface rounded-xl shadow-md border border-kemy-border dark:border-kemy-dark-border overflow-hidden">
       {/* Category header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-kemy-border dark:border-kemy-dark-border">
         <h3 className="font-heading text-lg font-semibold text-kemy-dark dark:text-kemy-white">

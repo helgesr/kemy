@@ -16,7 +16,7 @@ export default function ScoreSummary({
   categoryScores,
 }: ScoreSummaryProps) {
   return (
-    <div className="lg:sticky lg:top-6 flex flex-col gap-6 rounded-xl border border-kemy-border dark:border-kemy-dark-border bg-kemy-white dark:bg-kemy-dark-surface p-6 shadow-sm">
+    <div className="lg:sticky lg:top-6 flex flex-col gap-6 rounded-xl border border-kemy-border dark:border-kemy-dark-border bg-kemy-white dark:bg-kemy-dark-surface p-6 shadow-md">
       {/* Gauge */}
       <GaugeChart score={totalScore} />
 
