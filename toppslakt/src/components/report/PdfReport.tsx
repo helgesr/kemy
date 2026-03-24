@@ -319,7 +319,7 @@ const PdfReport = forwardRef<HTMLDivElement, PdfReportProps>(
             marginTop: 'auto',
           }}
         >
-          <span>Kemy AS – Beslutningsstøtte for toppslakt</span>
+          <span>Powered by Saxe.Tech AS © 2026</span>
           <span>www.kemy.no</span>
         </div>
       </div>
