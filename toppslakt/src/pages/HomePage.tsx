@@ -10,7 +10,7 @@ const fadeUp: Record<string, any> = {
 const products = [
   { title: 'KemySplit', image: '/images/kemysplit.avif', description: 'Fish-friendly weight-based sorting of fish groups' },
   { title: 'KemyLice', image: '/images/delicing-unit.avif', description: 'Delousing and return water cleaning system' },
-  { title: 'KemyPump', image: '/images/kemylice.avif', description: 'Mammut-principle fish and water pumping' },
+  { title: 'KemyPump', image: '/images/kemypump-render.avif', description: 'Mammut-principle fish and water pumping' },
 ];
 
 export default function HomePage() {

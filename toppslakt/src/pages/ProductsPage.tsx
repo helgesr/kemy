@@ -27,7 +27,7 @@ const products: Product[] = [
   },
   {
     name: 'KemyPump',
-    image: '/images/kemylice.avif',
+    image: '/images/kemypump-render.avif',
     description: 'Efficient pumping of both fish and water using the mammut principle.',
     features: ['Gentle fish transport', 'Air-driven suction principle', 'Minimal mechanical contact', 'Stainless steel (AISI304)'],
   },
