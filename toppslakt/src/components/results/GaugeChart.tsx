@@ -69,9 +69,9 @@ export default function GaugeChart({ score, maxScore = 24 }: GaugeChartProps) {
       <svg viewBox="0 0 200 120" className="w-full max-w-[260px]">
         <defs>
           <linearGradient id="gaugeGradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#2D8B4E" />
-            <stop offset="50%" stopColor="#D4890A" />
-            <stop offset="100%" stopColor="#C03030" />
+            <stop offset="0%" stopColor="#34C759" />
+            <stop offset="50%" stopColor="#FF9500" />
+            <stop offset="100%" stopColor="#FF3B30" />
           </linearGradient>
         </defs>
 

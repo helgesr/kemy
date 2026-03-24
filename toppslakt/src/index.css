@@ -1,38 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Inter', sans-serif;
+  --font-heading: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
 
   --color-kemy-white: #FFFFFF;
-  --color-kemy-dark: #1E2025;
-  --color-kemy-plum: #605C75;
-  --color-kemy-gray: #56585C;
-  --color-kemy-light: #C7C7C9;
+  --color-kemy-dark: #1A1A1E;
+  --color-kemy-plum: #6B6580;
+  --color-kemy-gray: #6E6E73;
+  --color-kemy-light: #AEAEB2;
   --color-kemy-accent: #1B1A21;
-  --color-kemy-surface: #F5F5F7;
-  --color-kemy-border: #E5E5EA;
+  --color-kemy-surface: #F2F2F7;
+  --color-kemy-border: rgba(0, 0, 0, 0.08);
 
-  --color-kemy-dark-bg: #13141A;
-  --color-kemy-dark-surface: #1C1D25;
-  --color-kemy-dark-border: #2E303A;
-  --color-kemy-dark-text: #E5E5EA;
+  --color-kemy-dark-bg: #000000;
+  --color-kemy-dark-surface: #1C1C1E;
+  --color-kemy-dark-border: rgba(255, 255, 255, 0.1);
+  --color-kemy-dark-text: #F2F2F7;
 
-  --color-risk-low: #2D8B4E;
-  --color-risk-medium: #D4890A;
-  --color-risk-high: #C03030;
+  --color-risk-low: #34C759;
+  --color-risk-medium: #FF9500;
+  --color-risk-high: #FF3B30;
 
-  --color-risk-low-bg: #E8F5EC;
-  --color-risk-medium-bg: #FFF3E0;
-  --color-risk-high-bg: #FDEAEA;
+  --color-risk-low-bg: #34C75912;
+  --color-risk-medium-bg: #FF950012;
+  --color-risk-high-bg: #FF3B3012;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
   font-family: var(--font-body);
-  background-color: #EEEEF0;
+  background: var(--color-kemy-surface);
   color: var(--color-kemy-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -40,6 +40,6 @@ body {
 }
 
 .dark body {
-  background-color: var(--color-kemy-dark-bg);
+  background: var(--color-kemy-dark-bg);
   color: var(--color-kemy-dark-text);
 }

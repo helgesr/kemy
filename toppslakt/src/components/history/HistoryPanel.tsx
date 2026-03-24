@@ -10,18 +10,13 @@ interface HistoryPanelProps {
   onCompare: (a: Assessment, b: Assessment) => void;
 }
 
-const typeColors: Record<string, string> = {
-  low: 'bg-risk-low text-white',
-  medium: 'bg-risk-medium text-white',
-  high: 'bg-risk-high text-white',
+const badgeColor: Record<string, string> = {
+  low: 'bg-risk-low',
+  medium: 'bg-risk-medium',
+  high: 'bg-risk-high',
 };
 
-export default function HistoryPanel({
-  assessments,
-  onLoad,
-  onDelete,
-  onCompare,
-}: HistoryPanelProps) {
+export default function HistoryPanel({ assessments, onLoad, onDelete, onCompare }: HistoryPanelProps) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -33,10 +28,7 @@ export default function HistoryPanel({
     });
   }
 
-  const canCompare = selected.length === 2;
-
   function handleCompare() {
-    if (!canCompare) return;
     const a = assessments.find((x) => x.id === selected[0]);
     const b = assessments.find((x) => x.id === selected[1]);
     if (a && b) onCompare(a, b);
@@ -45,23 +37,19 @@ export default function HistoryPanel({
   if (assessments.length === 0) return null;
 
   return (
-    <div className="mt-8">
+    <div className="mt-6">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 w-full text-left py-3 px-4 bg-kemy-white dark:bg-kemy-dark-surface rounded-xl border border-kemy-border dark:border-kemy-dark-border hover:bg-kemy-surface dark:hover:bg-kemy-dark-bg transition-colors"
+        className="flex items-center gap-2 w-full text-left py-3.5 px-4 bg-kemy-white dark:bg-kemy-dark-surface rounded-2xl border border-kemy-border dark:border-kemy-dark-border shadow-sm hover:shadow transition-shadow"
       >
-        <span className="font-heading text-lg font-semibold text-kemy-dark dark:text-kemy-dark-text">
+        <span className="text-[15px] font-semibold text-kemy-dark dark:text-kemy-dark-text">
           Historikk
         </span>
-        <span className="text-sm text-kemy-gray dark:text-kemy-light ml-1">
-          ({assessments.length} lagrede vurderinger)
+        <span className="text-[13px] text-kemy-light dark:text-kemy-gray">
+          ({assessments.length})
         </span>
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="ml-auto text-kemy-gray"
-        >
-          <ChevronDown size={20} />
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="ml-auto text-kemy-light">
+          <ChevronDown size={18} />
         </motion.span>
       </button>
 
@@ -71,66 +59,37 @@ export default function HistoryPanel({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className="mt-2 space-y-2">
-              {canCompare && (
-                <button
-                  onClick={handleCompare}
-                  className="text-sm font-medium text-kemy-plum hover:text-kemy-dark dark:hover:text-kemy-dark-text transition-colors mb-2"
-                >
-                  Sammenlign valgte ({selected.length}/2)
+            <div className="mt-2 bg-kemy-white dark:bg-kemy-dark-surface rounded-2xl border border-kemy-border dark:border-kemy-dark-border overflow-hidden">
+              {selected.length === 2 && (
+                <button onClick={handleCompare} className="w-full text-sm font-medium text-kemy-plum py-2.5 border-b border-kemy-border dark:border-kemy-dark-border hover:bg-kemy-surface dark:hover:bg-kemy-dark-bg transition-colors">
+                  Sammenlign valgte
                 </button>
               )}
-
-              {assessments.map((assessment) => (
+              {assessments.map((a, i) => (
                 <div
-                  key={assessment.id}
-                  className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
-                    selected.includes(assessment.id)
-                      ? 'border-kemy-plum bg-kemy-plum/5 dark:bg-kemy-plum/10'
-                      : 'border-kemy-border dark:border-kemy-dark-border bg-kemy-white dark:bg-kemy-dark-surface'
-                  }`}
+                  key={a.id}
+                  className={`flex items-center gap-3 px-4 py-3 ${i < assessments.length - 1 ? 'border-b border-kemy-border dark:border-kemy-dark-border' : ''}`}
                 >
                   <input
                     type="checkbox"
-                    checked={selected.includes(assessment.id)}
-                    onChange={() => toggleSelect(assessment.id)}
-                    className="w-4 h-4 rounded accent-kemy-plum shrink-0"
-                    aria-label={`Velg ${assessment.locationName}`}
+                    checked={selected.includes(a.id)}
+                    onChange={() => toggleSelect(a.id)}
+                    className="w-[18px] h-[18px] rounded accent-kemy-plum shrink-0"
                   />
-
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm text-kemy-dark dark:text-kemy-dark-text truncate">
-                      {assessment.locationName}
-                    </p>
-                    <p className="text-xs text-kemy-gray dark:text-kemy-light">
-                      {new Date(assessment.date).toLocaleDateString('nb-NO')}
-                    </p>
+                    <p className="text-sm font-medium text-kemy-dark dark:text-kemy-dark-text truncate">{a.locationName}</p>
+                    <p className="text-xs text-kemy-light dark:text-kemy-gray">{new Date(a.date).toLocaleDateString('nb-NO')}</p>
                   </div>
-
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-semibold shrink-0 ${
-                      typeColors[assessment.recommendation.type]
-                    }`}
-                  >
-                    {assessment.totalScore}/24
+                  <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold text-white tabular-nums shrink-0 ${badgeColor[a.recommendation.type]}`}>
+                    {a.totalScore}
                   </span>
-
-                  <button
-                    onClick={() => onLoad(assessment)}
-                    className="p-1.5 text-kemy-plum hover:bg-kemy-surface dark:hover:bg-kemy-dark-bg rounded-lg transition-colors shrink-0"
-                    title="Last inn"
-                  >
+                  <button onClick={() => onLoad(a)} className="p-1.5 text-kemy-light hover:text-kemy-plum rounded-lg transition-colors" title="Last inn">
                     <RotateCw size={14} />
                   </button>
-
-                  <button
-                    onClick={() => onDelete(assessment.id)}
-                    className="p-1.5 text-kemy-gray hover:text-risk-high hover:bg-risk-high-bg rounded-lg transition-colors shrink-0"
-                    title="Slett"
-                  >
+                  <button onClick={() => onDelete(a.id)} className="p-1.5 text-kemy-light hover:text-risk-high rounded-lg transition-colors" title="Slett">
                     <Trash2 size={14} />
                   </button>
                 </div>

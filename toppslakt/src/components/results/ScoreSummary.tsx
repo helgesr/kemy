@@ -16,18 +16,20 @@ export default function ScoreSummary({
   categoryScores,
 }: ScoreSummaryProps) {
   return (
-    <div className="lg:sticky lg:top-6 flex flex-col gap-6 rounded-xl border border-kemy-border dark:border-kemy-dark-border bg-kemy-white dark:bg-kemy-dark-surface p-6 shadow-md">
-      {/* Gauge */}
-      <GaugeChart score={totalScore} />
+    <div className="lg:sticky lg:top-20 flex flex-col gap-5">
+      <div className="bg-kemy-white dark:bg-kemy-dark-surface rounded-2xl shadow-sm border border-kemy-border dark:border-kemy-dark-border p-5">
+        <GaugeChart score={totalScore} />
+        <div className="mt-4">
+          <RecommendationBanner recommendation={recommendation} />
+        </div>
+      </div>
 
-      {/* Recommendation */}
-      <RecommendationBanner recommendation={recommendation} />
-
-      {/* Radar */}
-      <RadarChart categoryScores={categoryScores} />
-
-      {/* Category breakdown bars */}
-      <CategoryBreakdown categoryScores={categoryScores} />
+      <div className="bg-kemy-white dark:bg-kemy-dark-surface rounded-2xl shadow-sm border border-kemy-border dark:border-kemy-dark-border p-5">
+        <RadarChart categoryScores={categoryScores} />
+        <div className="mt-4">
+          <CategoryBreakdown categoryScores={categoryScores} />
+        </div>
+      </div>
     </div>
   );
 }
