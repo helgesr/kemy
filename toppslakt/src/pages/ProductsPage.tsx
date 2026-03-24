@@ -37,12 +37,6 @@ const products: Product[] = [
     description: 'Complete containerized delousing systems for vessel-based operations.',
     features: ['Turnkey solutions', 'Vessel-compatible', 'Integrated KemySplit sorting', 'High throughput capacity'],
   },
-  {
-    name: 'Stun & Bleed',
-    image: '/images/stun-bleed.avif',
-    description: 'Humane stunning and bleeding systems for on-board harvest processing.',
-    features: ['Welfare-compliant stunning', 'Efficient bleeding process', 'Vessel-integrated design', 'High-volume capacity'],
-  },
 ];
 
 export default function ProductsPage() {
