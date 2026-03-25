@@ -11,7 +11,7 @@ const navItems = [
   { label: 'Products', path: '/products' },
   { label: 'Markets', path: '/markets' },
   { label: 'Case', path: '/case' },
-  { label: 'Tools', path: '/tools' },
+  { label: 'Vurdering', path: '/tools' },
   { label: 'Contact', path: '/contact' },
 ];
 

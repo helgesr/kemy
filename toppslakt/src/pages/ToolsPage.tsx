@@ -36,6 +36,15 @@ export default function ToolsPage() {
   return (
     <>
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-kemy-dark dark:text-kemy-dark-text">
+            Vurdering av selektiv utslakt
+          </h1>
+          <p className="mt-1.5 text-sm text-kemy-gray dark:text-kemy-light leading-relaxed max-w-2xl">
+            Beslutningsverktøy for å vurdere om selektiv sortering og utslakt med KemySplit er riktig tiltak for din lokalitet.
+          </p>
+        </div>
+
         <AssessmentMeta
           locationName={assessment.locationName}
           onLocationChange={assessment.setLocationName}
