@@ -165,7 +165,7 @@ const en: Translations = {
   'footer.powered': 'Powered by Saxe.Tech AS',
 
   // ── Language ──
-  'lang.toggle': 'Norsk',
+  'lang.toggle': 'English',
 };
 
 export default en;

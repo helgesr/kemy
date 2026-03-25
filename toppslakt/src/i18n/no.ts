@@ -163,7 +163,7 @@ const no = {
   'footer.powered': 'Drevet av Saxe.Tech AS',
 
   // ── Language ──
-  'lang.toggle': 'English',
+  'lang.toggle': 'Norsk',
 } as const;
 
 export type TranslationKey = keyof typeof no;
