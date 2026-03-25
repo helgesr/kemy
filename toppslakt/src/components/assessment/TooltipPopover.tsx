@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Info } from 'lucide-react';
+import { useT } from '../../i18n/LanguageContext';
 
 interface TooltipPopoverProps {
   text: string;
 }
 
 export default function TooltipPopover({ text }: TooltipPopoverProps) {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -54,7 +56,7 @@ export default function TooltipPopover({ text }: TooltipPopoverProps) {
         type="button"
         onClick={() => setOpen((p) => !p)}
         className="p-0.5 rounded-full text-kemy-light dark:text-kemy-gray hover:text-kemy-plum dark:hover:text-kemy-dark-text transition-colors cursor-pointer"
-        aria-label="Vis hjelpetekst"
+        aria-label={t('score.tooltip')}
       >
         <Info size={14} />
       </button>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Save, RotateCcw, FileDown } from 'lucide-react';
+import { useT } from '../../i18n/LanguageContext';
 
 interface ActionBarProps {
   onSave: () => void;
@@ -10,6 +11,7 @@ interface ActionBarProps {
 
 export default function ActionBar({ onSave, onReset, onExportPdf, canSave }: ActionBarProps) {
   const [showConfirm, setShowConfirm] = useState(false);
+  const { t } = useT();
 
   return (
     <div className="flex flex-wrap gap-2.5">
@@ -19,7 +21,7 @@ export default function ActionBar({ onSave, onReset, onExportPdf, canSave }: Act
         className="flex items-center gap-2 px-4 py-2.5 bg-kemy-dark dark:bg-kemy-dark-text text-white dark:text-kemy-dark rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
       >
         <Save size={15} />
-        Lagre
+        {t('action.save')}
       </button>
 
       <button
@@ -27,7 +29,7 @@ export default function ActionBar({ onSave, onReset, onExportPdf, canSave }: Act
         className="flex items-center gap-2 px-4 py-2.5 bg-kemy-white dark:bg-kemy-dark-surface text-kemy-dark dark:text-kemy-dark-text border border-kemy-border dark:border-kemy-dark-border rounded-xl text-sm font-medium hover:bg-kemy-surface dark:hover:bg-kemy-dark-bg transition-colors"
       >
         <FileDown size={15} />
-        PDF
+        {t('action.pdf')}
       </button>
 
       {!showConfirm ? (
@@ -36,22 +38,22 @@ export default function ActionBar({ onSave, onReset, onExportPdf, canSave }: Act
           className="flex items-center gap-2 px-4 py-2.5 text-kemy-gray dark:text-kemy-light rounded-xl text-sm hover:bg-kemy-surface dark:hover:bg-kemy-dark-surface transition-colors"
         >
           <RotateCcw size={15} />
-          Nullstill
+          {t('action.reset')}
         </button>
       ) : (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-risk-high font-medium">Nullstille?</span>
+          <span className="text-sm text-risk-high font-medium">{t('action.resetConfirm')}</span>
           <button
             onClick={() => { onReset(); setShowConfirm(false); }}
             className="px-3 py-1.5 bg-risk-high text-white rounded-lg text-sm font-medium"
           >
-            Ja
+            {t('action.yes')}
           </button>
           <button
             onClick={() => setShowConfirm(false)}
             className="px-3 py-1.5 bg-kemy-surface dark:bg-kemy-dark-surface text-kemy-gray rounded-lg text-sm"
           >
-            Nei
+            {t('action.no')}
           </button>
         </div>
       )}

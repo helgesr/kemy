@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShieldCheck, AlertTriangle, AlertOctagon } from 'lucide-react';
 import type { Recommendation, RecommendationType } from '../../types/assessment';
+import { useT } from '../../i18n/LanguageContext';
+import type { TranslationKey } from '../../i18n/no';
 
 interface RecommendationBannerProps {
   recommendation: Recommendation;
@@ -26,6 +28,10 @@ const textStyles: Record<RecommendationType, string> = {
 
 export default function RecommendationBanner({ recommendation }: RecommendationBannerProps) {
   const Icon = iconMap[recommendation.type];
+  const { t } = useT();
+
+  const textKey = recommendation.textKey as TranslationKey | undefined;
+  const descKey = recommendation.descriptionKey as TranslationKey | undefined;
 
   return (
     <AnimatePresence mode="wait">
@@ -41,10 +47,10 @@ export default function RecommendationBanner({ recommendation }: RecommendationB
           <Icon size={18} className={`mt-0.5 shrink-0 ${textStyles[recommendation.type]}`} />
           <div>
             <p className={`text-sm font-semibold leading-snug ${textStyles[recommendation.type]}`}>
-              {recommendation.text}
+              {textKey ? t(textKey) : recommendation.text}
             </p>
             <p className="mt-0.5 text-[13px] text-kemy-gray dark:text-kemy-light leading-relaxed">
-              {recommendation.description}
+              {descKey ? t(descKey) : recommendation.description}
             </p>
           </div>
         </div>

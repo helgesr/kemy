@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import { useT } from '../../i18n/LanguageContext';
+import type { TranslationKey } from '../../i18n/no';
 
 interface ScoreSelectorProps {
   value: number;
@@ -6,13 +8,15 @@ interface ScoreSelectorProps {
   layoutId: string;
 }
 
-const options = [
-  { score: 0, label: 'Lav', activeColor: 'bg-risk-low', activeText: 'text-white' },
-  { score: 1, label: 'Moderat', activeColor: 'bg-risk-medium', activeText: 'text-white' },
-  { score: 2, label: 'Høy', activeColor: 'bg-risk-high', activeText: 'text-white' },
-] as const;
+const options: { score: number; labelKey: TranslationKey; activeColor: string; activeText: string }[] = [
+  { score: 0, labelKey: 'score.low', activeColor: 'bg-risk-low', activeText: 'text-white' },
+  { score: 1, labelKey: 'score.moderate', activeColor: 'bg-risk-medium', activeText: 'text-white' },
+  { score: 2, labelKey: 'score.high', activeColor: 'bg-risk-high', activeText: 'text-white' },
+];
 
 export default function ScoreSelector({ value, onChange, layoutId }: ScoreSelectorProps) {
+  const { t } = useT();
+
   return (
     <div className="inline-flex rounded-xl bg-kemy-surface dark:bg-kemy-dark-bg p-[3px] gap-[2px]">
       {options.map((opt) => {
@@ -35,7 +39,7 @@ export default function ScoreSelector({ value, onChange, layoutId }: ScoreSelect
                 transition={{ type: 'spring', stiffness: 500, damping: 35 }}
               />
             )}
-            <span className="relative z-10">{opt.label}</span>
+            <span className="relative z-10">{t(opt.labelKey)}</span>
           </button>
         );
       })}

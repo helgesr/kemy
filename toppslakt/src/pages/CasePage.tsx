@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useT } from '../i18n/LanguageContext';
 
 const fadeUp: Record<string, any> = {
   hidden: { opacity: 0, y: 24 },
@@ -17,6 +18,7 @@ const images = [
 
 export default function CasePage() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const { t } = useT();
 
   function closeLightbox() { setLightboxIndex(null); }
   function prev() { if (lightboxIndex !== null) setLightboxIndex((lightboxIndex - 1 + images.length) % images.length); }
@@ -26,10 +28,10 @@ export default function CasePage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <motion.div initial="hidden" animate="visible" variants={fadeUp} className="text-center mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-kemy-dark dark:text-kemy-dark-text">
-          Case Studies
+          {t('case.title')}
         </h1>
         <p className="mt-3 text-kemy-gray dark:text-kemy-light">
-          Press coverage and proven results — click to enlarge
+          {t('case.subtitle')}
         </p>
       </motion.div>
 
@@ -47,10 +49,10 @@ export default function CasePage() {
             onClick={() => setLightboxIndex(i)}
             className="group relative rounded-2xl overflow-hidden bg-kemy-white dark:bg-kemy-dark-surface border border-kemy-border dark:border-kemy-dark-border cursor-pointer focus:outline-none focus:ring-2 focus:ring-risk-low"
           >
-            <img src={src} alt={`Case study ${i + 1}`} className="w-full aspect-[4/3] object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+            <img src={src} alt={`${t('case.title')} ${i + 1}`} className="w-full aspect-[4/3] object-cover object-top group-hover:scale-105 transition-transform duration-500" />
             <div className="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_0_50px_rgba(0,0,0,0.25)]" />
             <div className="absolute inset-0 bg-kemy-dark/0 group-hover:bg-kemy-dark/20 transition-colors flex items-center justify-center">
-              <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">View full size</span>
+              <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">{t('case.viewFull')}</span>
             </div>
           </motion.button>
         ))}
@@ -82,7 +84,7 @@ export default function CasePage() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
               src={images[lightboxIndex]}
-              alt={`Case study ${lightboxIndex + 1}`}
+              alt={`${t('case.title')} ${lightboxIndex + 1}`}
               className="max-w-full max-h-[90vh] object-contain rounded-lg"
               onClick={(e) => e.stopPropagation()}
             />

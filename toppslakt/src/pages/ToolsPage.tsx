@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useAssessment } from '../hooks/useAssessment';
 import { useHistory } from '../hooks/useHistory';
+import { useT } from '../i18n/LanguageContext';
 import { categories } from '../data/factors';
 import { exportReportToPdf } from '../lib/pdf';
 import AssessmentMeta from '../components/assessment/AssessmentMeta';
@@ -18,6 +19,7 @@ export default function ToolsPage() {
   const history = useHistory();
   const [comparison, setComparison] = useState<{ a: Assessment; b: Assessment } | null>(null);
   const reportRef = useRef<HTMLDivElement>(null);
+  const { t } = useT();
 
   function handleSave() {
     history.save(assessment.locationName, assessment.date, assessment.scores);
@@ -38,10 +40,10 @@ export default function ToolsPage() {
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-kemy-dark dark:text-kemy-dark-text">
-            Vurdering av selektiv utslakt
+            {t('tools.title')}
           </h1>
           <p className="mt-1.5 text-sm text-kemy-gray dark:text-kemy-light leading-relaxed max-w-2xl">
-            Beslutningsverktøy for å vurdere om selektiv sortering og utslakt med KemySplit er riktig tiltak for din lokalitet.
+            {t('tools.subtitle')}
           </p>
         </div>
 
@@ -90,7 +92,6 @@ export default function ToolsPage() {
         />
       </main>
 
-      {/* Hidden PDF report - rendered off-screen for capture */}
       <PdfReport
         ref={reportRef}
         locationName={assessment.locationName}

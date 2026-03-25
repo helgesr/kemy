@@ -1,19 +1,22 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Calculator } from 'lucide-react';
+import { useT } from '../i18n/LanguageContext';
 
 const fadeUp: Record<string, any> = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const products = [
-  { title: 'KemySplit', image: '/images/kemysplit.avif', description: 'Fish-friendly weight-based sorting of fish groups' },
-  { title: 'KemyLice', image: '/images/delicing-unit.avif', description: 'Delousing and return water cleaning system' },
-  { title: 'KemyPump', image: '/images/kemypump-render.avif', description: 'Mammut-principle fish and water pumping' },
+const productKeys = [
+  { title: 'KemySplit', image: '/images/kemysplit.avif', descKey: 'home.product.kemysplit' as const },
+  { title: 'KemyLice', image: '/images/delicing-unit.avif', descKey: 'home.product.kemylice' as const },
+  { title: 'KemyPump', image: '/images/kemypump-render.avif', descKey: 'home.product.kemypump' as const },
 ];
 
 export default function HomePage() {
+  const { t } = useT();
+
   return (
     <div>
       {/* Hero with background image and strong overlay */}
@@ -23,25 +26,24 @@ export default function HomePage() {
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Gradient overlay: strong at bottom for text readability, light at top to let image show */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-40 w-full">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} className="max-w-2xl">
             <p className="text-lg text-white/70 max-w-md">
-              Fish handling equipment engineered for welfare, efficiency and durability. Proven across Norwegian aquaculture.
+              {t('home.hero')}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 to="/products"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white text-kemy-dark font-semibold text-sm rounded-xl hover:bg-white/90 transition-colors"
               >
-                Explore Products <ArrowRight size={16} />
+                {t('home.exploreProducts')} <ArrowRight size={16} />
               </Link>
               <Link
                 to="/tools"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white font-medium text-sm rounded-xl border border-white/15 hover:bg-white/15 transition-colors"
               >
-                <Calculator size={16} /> Harvest Calculator
+                <Calculator size={16} /> {t('home.harvestCalculator')}
               </Link>
             </div>
           </motion.div>
@@ -57,23 +59,21 @@ export default function HomePage() {
         className="max-w-6xl mx-auto px-4 sm:px-6 py-16"
       >
         <h2 className="text-2xl font-bold text-kemy-dark dark:text-kemy-dark-text text-center mb-10">
-          Our Products
+          {t('home.ourProducts')}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((p) => (
+          {productKeys.map((p) => (
             <motion.div key={p.title} variants={fadeUp}>
               <Link
                 to="/products"
                 className="group block bg-kemy-white dark:bg-kemy-dark-surface rounded-2xl overflow-hidden border border-kemy-border dark:border-kemy-dark-border hover:shadow-lg transition-shadow"
               >
-                {/* Image with soft inner shadow to mask any embedded text */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-kemy-surface dark:bg-kemy-dark-bg">
                   <img
                     src={p.image}
                     alt={p.title}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Soft vignette to fade image edges */}
                   <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_0_40px_rgba(0,0,0,0.25)]" />
                 </div>
                 <div className="p-5">
@@ -81,7 +81,7 @@ export default function HomePage() {
                     {p.title}
                   </h3>
                   <p className="mt-1 text-sm text-kemy-gray dark:text-kemy-light">
-                    {p.description}
+                    {t(p.descKey)}
                   </p>
                 </div>
               </Link>
@@ -102,19 +102,19 @@ export default function HomePage() {
           <div className="absolute top-0 left-0 w-1 h-full bg-risk-low rounded-l-2xl" />
           <div className="max-w-xl">
             <span className="inline-block text-xs font-semibold uppercase tracking-wider text-risk-low mb-2">
-              Decision Support
+              {t('home.cta.label')}
             </span>
             <h2 className="text-2xl font-bold text-kemy-dark dark:text-kemy-dark-text">
-              Harvest Risk Calculator
+              {t('home.cta.title')}
             </h2>
             <p className="mt-3 text-sm text-kemy-gray dark:text-kemy-light leading-relaxed">
-              Assess whether it's the right time for selective top-harvesting with our 12-factor risk scoring tool.
+              {t('home.cta.description')}
             </p>
             <Link
               to="/tools"
               className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-risk-low text-white font-semibold text-sm rounded-xl hover:opacity-90 transition-opacity"
             >
-              Open Calculator <ArrowRight size={15} />
+              {t('home.cta.button')} <ArrowRight size={15} />
             </Link>
           </div>
         </div>

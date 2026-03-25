@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { X, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import type { Assessment } from '../../types/assessment';
 import { categories } from '../../data/factors';
+import { useT } from '../../i18n/LanguageContext';
+import type { TranslationKey } from '../../i18n/no';
 
 interface ComparisonViewProps {
   a: Assessment;
@@ -21,7 +23,15 @@ const typeColors: Record<string, string> = {
   high: 'text-risk-high',
 };
 
+const catNameKeys: Record<string, TranslationKey> = {
+  biological: 'cat.biological',
+  'lice-operations': 'cat.lice',
+  economic: 'cat.economic',
+};
+
 export default function ComparisonView({ a, b, onClose }: ComparisonViewProps) {
+  const { t } = useT();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -36,7 +46,7 @@ export default function ComparisonView({ a, b, onClose }: ComparisonViewProps) {
       >
         <div className="flex items-center justify-between p-4 border-b border-kemy-border dark:border-kemy-dark-border">
           <h3 className="font-heading text-lg font-semibold text-kemy-dark dark:text-kemy-dark-text">
-            Sammenligning
+            {t('comparison.title')}
           </h3>
           <button
             onClick={onClose}
@@ -47,28 +57,30 @@ export default function ComparisonView({ a, b, onClose }: ComparisonViewProps) {
         </div>
 
         <div className="p-4">
-          {/* Header row */}
           <div className="grid grid-cols-[1fr_80px_80px_40px] gap-2 mb-3 text-xs font-semibold text-kemy-gray dark:text-kemy-light uppercase tracking-wider">
-            <span>Faktor</span>
+            <span>{t('comparison.factor')}</span>
             <span className="text-center truncate">{a.locationName}</span>
             <span className="text-center truncate">{b.locationName}</span>
-            <span className="text-center">Δ</span>
+            <span className="text-center">&Delta;</span>
           </div>
 
           {categories.map((cat) => (
             <div key={cat.id} className="mb-4">
-              <p className="text-xs font-semibold text-kemy-plum mb-1.5">{cat.name}</p>
+              <p className="text-xs font-semibold text-kemy-plum mb-1.5">
+                {t(catNameKeys[cat.id] ?? ('cat.biological' as TranslationKey))}
+              </p>
               {cat.factors.map((factor) => {
                 const scoreA = a.scores[factor.id] ?? 0;
                 const scoreB = b.scores[factor.id] ?? 0;
                 const delta = scoreB - scoreA;
+                const nameKey = `factor.${factor.id}` as TranslationKey;
                 return (
                   <div
                     key={factor.id}
                     className="grid grid-cols-[1fr_80px_80px_40px] gap-2 py-1.5 border-b border-kemy-border/50 dark:border-kemy-dark-border/50 last:border-0 text-sm"
                   >
                     <span className="text-kemy-dark dark:text-kemy-dark-text truncate">
-                      {factor.name}
+                      {t(nameKey)}
                     </span>
                     <span className="text-center font-medium">{scoreA}</span>
                     <span className="text-center font-medium">{scoreB}</span>
@@ -81,9 +93,8 @@ export default function ComparisonView({ a, b, onClose }: ComparisonViewProps) {
             </div>
           ))}
 
-          {/* Total */}
           <div className="grid grid-cols-[1fr_80px_80px_40px] gap-2 pt-3 border-t-2 border-kemy-border dark:border-kemy-dark-border font-semibold text-sm">
-            <span className="text-kemy-dark dark:text-kemy-dark-text">Totalscore</span>
+            <span className="text-kemy-dark dark:text-kemy-dark-text">{t('comparison.total')}</span>
             <span className={`text-center ${typeColors[a.recommendation.type]}`}>
               {a.totalScore}
             </span>

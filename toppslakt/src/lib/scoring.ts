@@ -18,6 +18,9 @@ export function getRecommendation(totalScore: number): Recommendation {
   if (totalScore <= 8) {
     return {
       type: 'low',
+      textKey: 'rec.low.text',
+      descriptionKey: 'rec.low.desc',
+      // Keep legacy fields for saved assessments
       text: 'Behold fisk – lav risiko',
       description: 'Risikoprofilen tilsier at det er trygt å beholde fisken i merden.',
     };
@@ -25,6 +28,8 @@ export function getRecommendation(totalScore: number): Recommendation {
   if (totalScore <= 16) {
     return {
       type: 'medium',
+      textKey: 'rec.medium.text',
+      descriptionKey: 'rec.medium.desc',
       text: 'Vurder selektiv toppslakt (20–40 %)',
       description:
         'Moderat risiko. Vurder å ta ut de største fiskene for å redusere eksponering.',
@@ -32,6 +37,8 @@ export function getRecommendation(totalScore: number): Recommendation {
   }
   return {
     type: 'high',
+    textKey: 'rec.high.text',
+    descriptionKey: 'rec.high.desc',
     text: 'Gjennomfør toppslakt – høy risiko',
     description:
       'Høy samlet risiko. Anbefaler å gjennomføre toppslakt for å sikre verdier.',

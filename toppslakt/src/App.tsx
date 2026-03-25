@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useTheme } from './hooks/useTheme';
+import { LanguageProvider } from './i18n/LanguageContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
@@ -13,21 +14,23 @@ export default function App() {
   const { dark, toggle } = useTheme();
 
   return (
-    <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
-        <Header dark={dark} onToggleTheme={toggle} />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/markets" element={<MarketsPage />} />
-            <Route path="/case" element={<CasePage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/tools" element={<ToolsPage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <div className="min-h-screen flex flex-col">
+          <Header dark={dark} onToggleTheme={toggle} />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/markets" element={<MarketsPage />} />
+              <Route path="/case" element={<CasePage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/tools" element={<ToolsPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }

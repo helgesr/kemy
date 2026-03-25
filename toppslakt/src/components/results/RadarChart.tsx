@@ -6,21 +6,25 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { categories } from '../../data/factors';
+import { useT } from '../../i18n/LanguageContext';
+import type { TranslationKey } from '../../i18n/no';
 
 interface RadarChartProps {
   categoryScores: Record<string, number>;
   maxCategoryScore?: number;
 }
 
-const shortNames: Record<string, string> = {
-  biological: 'Biologisk',
-  'lice-operations': 'Luse/drift',
-  economic: 'Økonomisk',
+const shortNameKeys: Record<string, TranslationKey> = {
+  biological: 'cat.biological.short',
+  'lice-operations': 'cat.lice.short',
+  economic: 'cat.economic.short',
 };
 
 export default function RadarChart({ categoryScores, maxCategoryScore = 8 }: RadarChartProps) {
+  const { t } = useT();
+
   const data = categories.map((cat) => ({
-    category: shortNames[cat.id] ?? cat.name,
+    category: t(shortNameKeys[cat.id] ?? ('cat.biological.short' as TranslationKey)),
     value: ((categoryScores[cat.id] ?? 0) / maxCategoryScore) * 100,
     fullMark: 100,
   }));

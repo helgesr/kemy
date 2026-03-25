@@ -17,6 +17,8 @@ export interface Recommendation {
   type: RecommendationType;
   text: string;
   description: string;
+  textKey?: string;
+  descriptionKey?: string;
 }
 
 export interface Assessment {

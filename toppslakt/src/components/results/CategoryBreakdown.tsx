@@ -1,10 +1,18 @@
 import { motion } from 'framer-motion';
 import { categories } from '../../data/factors';
+import { useT } from '../../i18n/LanguageContext';
+import type { TranslationKey } from '../../i18n/no';
 
 interface CategoryBreakdownProps {
   categoryScores: Record<string, number>;
   maxScore?: number;
 }
+
+const catNameKeys: Record<string, TranslationKey> = {
+  biological: 'cat.biological',
+  'lice-operations': 'cat.lice',
+  economic: 'cat.economic',
+};
 
 function barColor(score: number): string {
   if (score <= 2) return 'bg-risk-low';
@@ -13,6 +21,8 @@ function barColor(score: number): string {
 }
 
 export default function CategoryBreakdown({ categoryScores, maxScore = 8 }: CategoryBreakdownProps) {
+  const { t } = useT();
+
   return (
     <div className="flex flex-col gap-2.5">
       {categories.map((cat) => {
@@ -21,7 +31,7 @@ export default function CategoryBreakdown({ categoryScores, maxScore = 8 }: Cate
         return (
           <div key={cat.id} className="flex items-center gap-3">
             <span className="w-[110px] shrink-0 truncate text-[13px] text-kemy-gray dark:text-kemy-light">
-              {cat.name}
+              {t(catNameKeys[cat.id] ?? ('cat.biological' as TranslationKey))}
             </span>
             <div className="flex-1 h-[6px] rounded-full bg-kemy-surface dark:bg-kemy-dark-border overflow-hidden">
               <motion.div
